@@ -29,8 +29,14 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
+  # dependencies: ruby-jwt, activesupport
+  spec.add_dependency "jwt"
+  spec.add_dependency "activesupport"
+
+  # add development dependencies: rspec, rake, bundler
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "bundler"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
