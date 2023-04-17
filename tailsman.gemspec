@@ -29,8 +29,9 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # dependencies: ruby-jwt, activesupport
+  # dependencies: ruby-jwt, rails, activesupport
   spec.add_dependency "jwt"
+  spec.add_dependency "rails"
   spec.add_dependency "activesupport"
 
   # add development dependencies: rspec, rake, bundler

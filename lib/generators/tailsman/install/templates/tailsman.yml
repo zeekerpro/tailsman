@@ -1,0 +1,12 @@
+# config/tailsman.yml
+default: &default
+  # add default configuration here
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
