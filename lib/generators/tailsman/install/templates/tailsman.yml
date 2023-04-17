@@ -1,6 +1,18 @@
 # config/tailsman.yml
 default: &default
-  # add default configuration here
+  #secret_key 配置在 credentials 中
+  # token label
+  label: 'access-token'
+  # 加密算法
+  algorithm: HS256
+  # 过期时限 60 min
+  # 超过需要重新登陆
+  lifetime: 36000
+  # 失效时限 30 min
+  # 超过失效时限需要重新更新token, 不需要重新登陆
+  validity: 18000
+  # 消除服务器和客户端的时间同步偏移
+  leeway : 10
 
 development:
   <<: *default
