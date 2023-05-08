@@ -6,7 +6,8 @@ module Tailsman
       source_root File.expand_path('templates', __dir__)
 
       def registor_tailsman
-        copy_file "tailsman.yml", "config/tailsman.yml"
+        template "tailsman.yml", "config/tailsman.yml"
+        template "cors.rb", "config/initializers/cors.rb"
         application "config.tailsman = config_for(:tailsman)"
       end
 

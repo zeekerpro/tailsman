@@ -1,6 +1,7 @@
 # config/tailsman.yml
 default: &default
-  #secret_key 配置在 credentials 中
+  # jwts config
+  # secret_key 配置在 credentials 中
   # token label
   label: 'access-token'
   # 加密算法
@@ -13,6 +14,10 @@ default: &default
   validity: 18000
   # 消除服务器和客户端的时间同步偏移
   leeway : 10
+  # cors config
+  origins:
+    - 'http://localhost:3173'
+    - 'https://localhost:3173'
 
 development:
   <<: *default
@@ -22,3 +27,4 @@ test:
 
 production:
   <<: *default
+

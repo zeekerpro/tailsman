@@ -30,9 +30,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # dependencies: ruby-jwt, rails, activesupport
-  spec.add_dependency "jwt"
   spec.add_dependency "rails"
   spec.add_dependency "activesupport"
+  spec.add_dependency "jwt"
+  spec.add_dependency "rack-cors"
 
   # add development dependencies: rspec, rake, bundler
   spec.add_development_dependency "rspec"

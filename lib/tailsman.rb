@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "tailsman/version"
-
 require "jwt"
+require "rack/cors"
 
 module Tailsman
   extend ActiveSupport::Concern
