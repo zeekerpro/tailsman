@@ -3,17 +3,16 @@
 require_relative "tailsman/version"
 require "jwt"
 require "rack/cors"
+require_relative "tailsman/errors"
 
 module Tailsman
   extend ActiveSupport::Concern
-
-  class UnauthorizedError < StandardError; end
 
   included do
 
     require_relative "tailsman/jwt_token"
 
-    rescue_from JWT::DecodeError, UnauthorizedError, with: :auth_failed
+    rescue_from JWT::DecodeError, Errors::UnauthorizedError, Errors::NotExistError, Errors::InvalidPasswordError, with: :auth_failed
 
     after_action :set_token
 
@@ -23,7 +22,7 @@ module Tailsman
 
     def auth_failed(error)
       Rails.logger.warn error.message
-      render json: { message: error.message }, status: :unauthorized
+      render json: { error: error.to_json }, status: :unauthorized
     end
 
     def token_info
@@ -51,8 +50,7 @@ module Tailsman
         # 用户如果已经登录，则不用校验jwt了, 适用于微信小程序登录的情况
         # 微信小程序登录使用open_id 自动登录，在校验jwt之前校验wechat_open_id
         # 详细情况查看module WechatAuth
-        raise UnauthorizedError, '请先登录' if self.send("current_#{auth_model}").nil?
-
+        raise Errors::UnauthorizedError.new '请先登录' if self.send("current_#{auth_model}").nil?
       end
 
       # 获取当前用户
@@ -68,18 +66,16 @@ module Tailsman
       define_method :current_from_token do
         token = request_token
         @is_new_token_required = JwtToken.invalid?(token)
-
         d_token = token_info
         current_id = d_token[:id]
-        raise UnauthorizedError, '用户不存在' if (current_id.blank? or !model_constant.exists?(current_id))
-
+        raise Errors::UnauthorizedError.new if (current_id.blank? or !model_constant.exists?(current_id))
         model_constant.find(current_id)
       end
 
       define_method :sign_in do | params, auth_key |
-        current = model_constant.send("find_by_#{auth_key}", params[auth_key]).try(:authenticate, params[:password])
-        raise UnauthorizedError, '用户名或密码错误' unless current
-
+        current = model_constant.send("find_by_#{auth_key}", params[auth_key])
+        raise Errors::NotExistError.new("#{auth_key}") unless current
+        raise Errors::InvalidPasswordError.new unless current.try(:authenticate, params[:password])
         instance_variable_set("@current_#{auth_model}", current)
         @is_new_token_required= true
       end
