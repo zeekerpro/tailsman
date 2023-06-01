@@ -22,7 +22,7 @@ module Tailsman
 
     def auth_failed(error)
       Rails.logger.warn error.message
-      render json: { error: error.to_json }, status: :unauthorized
+      render json: { error: error.serializable_hash }, status: :unauthorized
     end
 
     def token_info

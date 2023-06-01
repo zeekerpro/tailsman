@@ -5,22 +5,22 @@ module Tailsman
 
     class UnauthorizedError < StandardError
       attr_reader :message, :status
-      def initialize(message = "登录失败")
+      def initialize(message = "")
         super(message)
         @message = message
         @status = :unauthorized
       end
 
-      def to_json
+      def serializable_hash
         instance_variables.each_with_object({}) { |var, hash|
           hash[var.to_s.delete("@")] = instance_variable_get(var)
-        }.to_json
+        }
       end
     end
 
     class InvalidPasswordError < UnauthorizedError
       attr_reader :attribute, :status, :message
-      def initialize(message = "密码错误")
+      def initialize(message = "password is invalid")
         super(message)
         @attribute = :password
       end
@@ -28,7 +28,7 @@ module Tailsman
 
     class NotExistError <  UnauthorizedError
       attr_reader :attribute, :status, :message
-      def initialize(attribute = :email, message = "用户不存在")
+      def initialize(attribute = :email, message = "#{attribute} is not exist")
         super(message)
         @attribute = attribute
         @status = :not_found
