@@ -5,7 +5,7 @@ module Tailsman
 
     class UnauthorizedError < StandardError
       attr_reader :message, :status
-      def initialize(message = "")
+      def initialize(message = "authorization failed")
         super(message)
         @message = message
         @status = :unauthorized

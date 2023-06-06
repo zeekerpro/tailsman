@@ -50,7 +50,7 @@ module Tailsman
         # 用户如果已经登录，则不用校验jwt了, 适用于微信小程序登录的情况
         # 微信小程序登录使用open_id 自动登录，在校验jwt之前校验wechat_open_id
         # 详细情况查看module WechatAuth
-        raise Errors::UnauthorizedError.new '请先登录' if self.send("current_#{auth_model}").nil?
+        raise Errors::UnauthorizedError if self.send("current_#{auth_model}").nil?
       end
 
       # 获取当前用户
