@@ -11,7 +11,7 @@ module Tailsman
         @status = :unauthorized
       end
 
-      def serializable_hash
+      def to_json
         instance_variables.each_with_object({}) { |var, hash|
           hash[var.to_s.delete("@")] = instance_variable_get(var)
         }
