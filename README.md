@@ -52,7 +52,7 @@ tailsman_for :user
 ```
 
 This will generate the following methods in the controller:
-* `authenticate_user`: use with a *** before_action *** to enforce authentication for specific actions.
+* `authenticate_user`: use with a `before_action` to enforce authentication for specific actions.
 * `current_user`: retrive the currently authenticated user.
 * `sign_in(params, auth_key)`: Authenticate a user based on the provided params. The auth_key specifies the attribute name (e.g., email, phone, username) used to identify the user account.
 * `force_signin(@user)`: Log in a given user instance.
