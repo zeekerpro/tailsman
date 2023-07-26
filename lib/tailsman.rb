@@ -43,7 +43,7 @@ module Tailsman
   end
 
   class_methods do
-    def tailsman_for(auth_model)
+    def tailsman_for(auth_model = :user)
 
       # 校验 request 的token
       define_method "authenticate_#{auth_model}" do

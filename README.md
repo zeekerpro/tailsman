@@ -1,34 +1,72 @@
 # Tailsman
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tailsman`. To experiment with that code, run `bin/console` for an interactive prompt.
+Tailsman is a streamlined gem for Ruby on Rails that combines JWT authentication and CORS configuration.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile
+```ruby
+gem 'tailsman', github: 'zeekerpro/tailsman'
+```
 
-Install the gem and add to the application's Gemfile by executing:
+and then execute
+```bash
+bundle install
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+After installing the gem, run the generator to set up the necessary configuration files:
+```base
+rails g tailsman:install
+```
+> use *** rails g *** to see all generators
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+This will perform the following actions:
+1. Generate `app/config/tailsman.yml`, the config file used for JWT and CORS settings.
+2. Generate `app/config/initializers/cors.rb`
+3. Add `config.tailsman = config_for(:tailsman)` to `app/config/application.rb`
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+
+## Contributing
+Edit the app/config/tailsman.yml file to specify your JWT and CORS configurations. This allows you to set up the necessary settings for JWT authentication and CORS handling in your Rails application.
 
 ## Usage
+Tailsman simplifies JWT authentication and CORS configuration for your Rails application, making it easy to secure your endpoints and handle Cross-Origin Resource Sharing effectively.
 
-TODO: Write usage instructions here
+### JWT Authentication
+To enable JWT authentication for a specific model, include the Tailsman module in your ApplicationController:
+```ruby
+# app/controllers/application_controller.rb
 
-## Development
+class ApplicationController < ActionController::Base
+  include Tailsman
+end
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Then, use the * tailsman_for * class method to set up JWT authentication for the desired model.
+
+For example, to enable JWT authentication for the User model, add the following line to your controller:
+
+``` ruby
+tailsman_for :user
+```
+
+This will generate the following methods in the controller:
+* `authenticate_user`: use with a *** before_action *** to enforce authentication for specific actions.
+* `current_user`: retrive the currently authenticated user.
+* `sign_in(params, auth_key)`: Authenticate a user based on the provided params. The auth_key specifies the attribute name (e.g., email, phone, username) used to identify the user account.
+* `force_signin(@user)`: Log in a given user instance.
+
+Similarly, you can enable JWT authentication for the `Admin` model by adding the following line to your controller
+```
+tailsman_for :admin
+```
+
+This will generate the following methods in the controller: `authenticate_admin`, `current_admin`
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/tailsman.
+Contributions to Tailsman are welcome! If you find any bugs or want to add new features, please submit an issue or pull request.
 
 ## License
 
