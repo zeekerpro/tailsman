@@ -18,7 +18,7 @@ After installing the gem, run the generator to set up the necessary configuratio
 ```base
 rails g tailsman:install
 ```
-> use *** rails g *** to see all generators
+> use `rails g` to see all generators
 
 This will perform the following actions:
 1. Generate `app/config/tailsman.yml`, the config file used for JWT and CORS settings.
@@ -43,7 +43,7 @@ end
 
 ```
 
-Then, use the * tailsman_for * class method to set up JWT authentication for the desired model.
+Then, use the `tailsman_for` class method to set up JWT authentication for the desired model.
 
 For example, to enable JWT authentication for the User model, add the following line to your controller:
 
