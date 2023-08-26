@@ -36,7 +36,7 @@ module Tailsman
           dispatch_token
         else
           Rails.logger.info "token is valid, clean token in response headers"
-          response.headers.delete_if{|key| key == JwtToken::LABEL }
+          response.headers.delete_if{|key| key == JwtToken::LABEL } unless response.committed?
         end
       end
 
@@ -96,7 +96,7 @@ module Tailsman
       # 为当前用户分发新的 token
       define_method :dispatch_token do
         current = send "current_#{auth_model}"
-        response.headers[JwtToken::LABEL] = JwtToken.encode({ id: current[:id] }) if current
+        response.headers[JwtToken::LABEL] = JwtToken.encode({ id: current[:id] }) if current and !response.committed?
       end
 
       private :current_from_token, :model_constant, :dispatch_token
