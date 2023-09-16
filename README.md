@@ -24,7 +24,7 @@ This will perform the following actions:
 1. Generate `app/config/tailsman.yml`, the config file used for JWT and CORS settings.
 2. Generate `app/config/initializers/cors.rb`
 3. Add `config.tailsman = config_for(:tailsman)` to `app/config/application.rb`
-
+4. include the Tailsman::ControllerMethods module in ActionController::Base
 
 ## configurations
 Edit the app/config/tailsman.yml file to specify your JWT and CORS configurations. This allows you to set up the necessary settings for JWT authentication and CORS handling in your Rails application.
@@ -33,15 +33,6 @@ Edit the app/config/tailsman.yml file to specify your JWT and CORS configuration
 Tailsman simplifies JWT authentication and CORS configuration for your Rails application, making it easy to secure your endpoints and handle Cross-Origin Resource Sharing effectively.
 
 ### JWT Authentication
-To enable JWT authentication for a specific model, include the Tailsman module in your ApplicationController:
-```ruby
-# app/controllers/application_controller.rb
-
-class ApplicationController < ActionController::Base
-  include Tailsman
-end
-
-```
 
 Then, use the `tailsman_for` class method to set up JWT authentication for the desired model.
 
