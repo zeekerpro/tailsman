@@ -1,8 +1,6 @@
 require 'jwt'
 
 # must be required after app.config.tailsman is set
-# otherwise, app.config.tailsman is nil
-
 module Tailsman
 
   module JwtToken

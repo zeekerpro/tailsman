@@ -1,7 +1,6 @@
-require 'tailsman/controller_methods'
-
 module Tailsman
   class Railtie < Rails::Railtie
+
     initializer "tailsman.insert_middleware" do |app|
 
       app.config.tailsman = app.config_for(:tailsman)
@@ -13,6 +12,7 @@ module Tailsman
       require('tailsman/middleware')
       app.config.middleware.use Tailsman::Middleware
 
+      require 'tailsman/controller_methods'
       ActiveSupport.on_load(:action_controller) do
         include Tailsman::ControllerMethods
       end

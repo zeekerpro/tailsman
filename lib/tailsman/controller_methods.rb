@@ -6,8 +6,6 @@ module Tailsman
     included do
       include ActiveSupport::Rescuable
 
-      require "tailsman/jwt_token"
-
       rescue_from JWT::DecodeError,
         Errors::UnauthorizedError,
         Errors::NotExistError,

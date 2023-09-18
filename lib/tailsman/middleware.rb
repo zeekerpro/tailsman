@@ -1,5 +1,3 @@
-require 'jwt'
-
 module Tailsman
   class Middleware
 
