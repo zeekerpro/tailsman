@@ -1,3 +1,5 @@
+require 'jwt'
+
 module Tailsman
   class Middleware
 
@@ -14,13 +16,13 @@ module Tailsman
 
       def verify_token(env)
         request = ActionDispatch::Request.new(env)
-        token = request.headers[JwtToken::LABEL]
+        token = request.headers[Tailsman::JwtToken::LABEL]
         if token.present?
           begin
-            token_info = JwtToken.decode token
+            token_info = Tailsman::JwtToken.decode token
             if token_info.present?
               env[:tailsman_token_info] = token_info
-              env[:tailsman_new_token_required] = JwtToken.invalid?(token)
+              env[:tailsman_new_token_required] = Tailsman::JwtToken.invalid?(token)
             end
           rescue JWT::DecodeError => e
             # token 解析失败， 不做处理，继续执行, 交给 controller 继续处理

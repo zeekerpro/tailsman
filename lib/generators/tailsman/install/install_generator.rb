@@ -8,7 +8,6 @@ module Tailsman
       def registor_tailsman
         template "tailsman.yml", "config/tailsman.yml"
         template "cors.rb", "config/initializers/cors.rb"
-        application "config.tailsman = config_for(:tailsman)"
       end
 
     end
