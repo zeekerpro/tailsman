@@ -1,5 +1,3 @@
-require 'jwt'
-
 # must be required after app.config.tailsman is set
 module Tailsman
 

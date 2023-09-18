@@ -1,5 +1,3 @@
-require 'json'
-
 module Tailsman
   module Errors
 
