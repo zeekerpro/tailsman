@@ -1,63 +1,68 @@
 # Tailsman
 
-Tailsman is a streamlined gem for Ruby on Rails that combines JWT authentication and CORS configuration.
+Tailsman is an elegantly crafted Ruby on Rails gem designed to seamlessly integrate JWT authentication and CORS configuration into your application.
 
 ## Installation
 
-Add this line to your application's Gemfile
+To get started, add Tailsman to your application's Gemfile:
 ```ruby
 gem 'tailsman', github: 'zeekerpro/tailsman'
 ```
 
-and then execute
+Then, install the gem by running:
 ```bash
 bundle install
 ```
 
-After installing the gem, run the generator to set up the necessary configuration files:
+Next, use the provided generator to set up the essential configuration files:
 ```base
 rails g tailsman:install
 ```
-> use `rails g` to see all generators
+> Tip: Run rails g to explore all available generators.
 
-This will perform the following actions:
-1. Generate `app/config/tailsman.yml`, the config file used for JWT and CORS settings.
+Executing this command will:
+1. Create app/config/tailsman.yml, a configuration file for JWT and CORS settings.
 2. Generate `app/config/initializers/cors.rb`
-3. include the Tailsman::ControllerMethods module in ActionController::Base
+3. Automatically include the Tailsman::ControllerMethods module in ActionController::Base.
 
 ## configurations
-Edit the app/config/tailsman.yml file to specify your JWT and CORS configurations. This allows you to set up the necessary settings for JWT authentication and CORS handling in your Rails application.
+Customize your JWT and CORS settings by editing the app/config/tailsman.yml file. This configuration step is crucial for tailoring JWT authentication and CORS management to your application's specific needs.
+
 
 ## Usage
-Tailsman simplifies JWT authentication and CORS configuration for your Rails application, making it easy to secure your endpoints and handle Cross-Origin Resource Sharing effectively.
+Tailsman streamlines the integration of JWT authentication and CORS configuration into your Rails application. Its intuitive design simplifies securing your endpoints and effectively managing Cross-Origin Resource Sharing.
 
 ### JWT Authentication
 
-Then, use the `tailsman_for` class method to set up JWT authentication for the desired model.
+Use the `tailsman_for` class method to enable JWT authentication for your desired model.
 
-For example, to enable JWT authentication for the User model, add the following line to your controller:
-
+For instance, to set up JWT authentication for the User model, insert this line into your controller:
 ``` ruby
 tailsman_for :user
 ```
 
-This will generate the following methods in the controller:
-* `authenticate_user`: use with a `before_action` to enforce authentication for specific actions.
-* `current_user`: retrive the currently authenticated user.
-* `sign_in(params, auth_key)`: Authenticate a user based on the provided params. The auth_key specifies the attribute name (e.g., email, phone, username) used to identify the user account.
-* `force_signin(@user)`: Log in a given user instance.
+This addition dynamically generates several controller methods:
 
-Similarly, you can enable JWT authentication for the `Admin` model by adding the following line to your controller
-```
+* `authenticate_user` and its alias `signin_required`: Designed for use with `before_action`, these methods enforce authentication for specific actions. `signin_required` serves as a straightforward alias for `authenticate_user`.
+* `current_user`: Retrieve the currently authenticated user.
+* `sign_in(params, auth_key)`: Authenticate a user based on provided parameters. The `auth_key` identifies the user account attribute (like email, phone, or username).
+* `force_signin(@user)`: Directly log in a specified user instance.
+
+Moreover, `signin_required` is defined as an alias for `authenticate_user`, offering a uniform and intuitive naming convention across your controllers.
+
+To apply JWT authentication to the `Admin` model, add this line:
+
+```ruby
 tailsman_for :admin
 ```
 
-This will generate the following methods in the controller: `authenticate_admin`, `current_admin`
+This will generate `authenticate_admin`, `signin_required`, and `current_admin` methods, mirroring the User model's authentication capabilities.
 
 ## Contributing
 
-Contributions to Tailsman are welcome! If you find any bugs or want to add new features, please submit an issue or pull request.
+We warmly welcome contributions to Tailsman! Whether it's bug reports or feature requests, feel free to submit an issue or a pull request.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Tailsman is open source, available under the [MIT License](https://opensource.org/licenses/MIT).
+

@@ -42,6 +42,7 @@ module Tailsman
           # 详细情况查看module WechatAuth
           raise Errors::UnauthorizedError if self.send("current_#{auth_model}").nil?
         end
+        alias_method :signin_required, "authenticate_#{auth_model}".to_sym
 
         # 获取当前用户
         define_method "current_#{auth_model}" do
