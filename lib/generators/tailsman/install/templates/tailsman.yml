@@ -16,6 +16,8 @@ default: &default
   leeway : 10
   # cors config
   origins:
+    # sample use regexp
+    - !ruby/regexp '/https?:\/\/.*\.local\.me:3000/'
     - 'http://localhost:3173'
     - 'https://localhost:3173'
 
