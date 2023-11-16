@@ -45,7 +45,7 @@ This addition dynamically generates several controller methods:
 
 * `authenticate_user` and its alias `signin_required`: Designed for use with `before_action`, these methods enforce authentication for specific actions. `signin_required` serves as a straightforward alias for `authenticate_user`.
 * `current_user`: Retrieve the currently authenticated user.
-* `sign_in(params, auth_key)`: Authenticate a user based on provided parameters. The `auth_key` identifies the user account attribute (like email, phone, or username).
+* `signin(params, auth_key)`: Authenticate a user based on provided parameters. The `auth_key` identifies the user account attribute (like email, phone, or username).
 * `force_signin(@user)`: Directly log in a specified user instance.
 
 Moreover, `signin_required` is defined as an alias for `authenticate_user`, offering a uniform and intuitive naming convention across your controllers.

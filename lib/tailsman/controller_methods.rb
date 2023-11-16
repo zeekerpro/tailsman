@@ -62,7 +62,7 @@ module Tailsman
           model_constant.find(current_id)
         end
 
-        define_method :sign_in do | params, auth_key |
+        define_method :signin do | params, auth_key |
           current = model_constant.send("find_by_#{auth_key}", params[auth_key])
           raise Errors::NotExistError.new("#{auth_key}") unless current
           raise Errors::InvalidPasswordError.new unless current.try(:authenticate, params[:password])
@@ -71,7 +71,7 @@ module Tailsman
         end
 
         # 强制登录
-        define_method :force_sign_in do | current |
+        define_method :force_signin do | current |
           instance_variable_set("@current_#{auth_model}", current )
           @is_new_token_required= true
         end
