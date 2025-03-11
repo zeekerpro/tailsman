@@ -23,9 +23,9 @@ module Tailsman
               env[:tailsman_new_token_required] = Tailsman::JwtToken.invalid?(token)
             end
           rescue JWT::DecodeError => e
-            # token 解析失败， 不做处理，继续执行, 交给 controller 继续处理
-            # 因为有些接口不需要登录，所以不需要校验token
-            # 需要登录的接口，会在 controller 中校验
+            # Token parsing failed, continue execution and let controller handle it
+            # Some endpoints don't require login, so token validation is not needed
+            # For endpoints requiring login, validation will be done in controller
             # return [401, { "Content-Type" => "text/plain" }, ["Unauthorized"]]
           end
         end

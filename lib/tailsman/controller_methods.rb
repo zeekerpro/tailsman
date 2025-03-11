@@ -35,16 +35,17 @@ module Tailsman
 
       def tailsman_for(auth_model = :user)
 
-        # 校验 request 的token
+        # Validate request token
         define_method "authenticate_#{auth_model}" do
-          # 用户如果已经登录，则不用校验jwt了, 适用于微信小程序登录的情况
-          # 微信小程序登录使用open_id 自动登录，在校验jwt之前校验wechat_open_id
-          # 详细情况查看module WechatAuth
+          # If user is already logged in, no need to validate JWT
+          # This is useful for WeChat Mini Program login scenario
+          # WeChat Mini Program uses open_id for auto-login, checking wechat_open_id before JWT
+          # For details, see module WechatAuth
           raise Errors::UnauthorizedError if self.send("current_#{auth_model}").nil?
         end
         alias_method :signin_required, "authenticate_#{auth_model}".to_sym
 
-        # 获取当前用户
+        # Get current user
         define_method "current_#{auth_model}" do
           current_logged = instance_variable_get "@current_#{auth_model}"
           return current_logged if current_logged.present?
@@ -53,7 +54,7 @@ module Tailsman
           instance_variable_set("@current_#{auth_model}", current_logged)
         end
 
-        # 从 token 解析当前用户
+        # Parse current user from token
         define_method :current_from_token do
           token_info = request.env[:tailsman_token_info]
           @is_new_token_required = request.env[:tailsman_new_token_required]
@@ -70,20 +71,20 @@ module Tailsman
           @is_new_token_required= true
         end
 
-        # 强制登录
+        # Force login
         define_method :force_signin do | current |
           instance_variable_set("@current_#{auth_model}", current )
           @is_new_token_required= true
         end
 
-        # 转换得到当前用户的 model constantize
+        # Convert to current user's model constantize
         # 'user' -> User
         # 'admin' -> Admin
         define_method :model_constant do
           auth_model.to_s.capitalize.constantize
         end
 
-        # 为当前用户分发新的 token
+        # Issue new token for current user
         define_method :dispatch_token do
           current = send "current_#{auth_model}"
           response.headers[JwtToken::LABEL] = JwtToken.encode({ id: current[:id] }) if current and !response.committed?

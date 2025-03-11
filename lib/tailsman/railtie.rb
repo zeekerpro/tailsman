@@ -2,22 +2,25 @@ module Tailsman
   class Railtie < Rails::Railtie
     class ConfigurationError < StandardError; end
 
+    # Initialize configuration options
+    config.tailsman = ActiveSupport::OrderedOptions.new
+
     config.before_initialize do |app|
-      # 在生成器环境下，设置一个空的配置对象
+      # Set empty config object in generator environment
       if Rails.env.generator? || defined?(Rails::Generators)
-        app.config.tailsman = {}
+        app.config.tailsman ||= {}
       end
     end
 
-    # 仅在非生成器环境下初始化
+    # Initialize only in non-generator environment
     initializer "tailsman.setup", after: :load_config_initializers do |app|
-      # 跳过生成器环境
+      # Skip generator environment
       if !Rails.env.generator? && !defined?(Rails::Generators)
         begin
-          # 加载配置
+          # Load configuration
           app.config.tailsman = app.config_for(:tailsman)
         rescue RuntimeError => e
-          # 构建友好的错误信息
+          # Build friendly error message
           error_message = <<~ERROR
             Tailsman configuration file not found!
 
@@ -32,19 +35,19 @@ module Tailsman
               https://github.com/zeekerpro/tailsman#installation
           ERROR
 
-          # 在控制台显示错误信息
+          # Display error message in console
           Rails.logger.error "\n\e[31m#{error_message}\e[0m"
           
-          # 抛出自定义错误
+          # Raise custom error
           raise ConfigurationError, error_message
         end
 
-        # 加载功能模块
+        # Load functionality modules
         require 'tailsman/jwt_token'
         require 'tailsman/middleware'
         require 'tailsman/controller_methods'
 
-        # 设置中间件和控制器方法
+        # Setup middleware and controller methods
         app.config.middleware.use Tailsman::Middleware
         ActiveSupport.on_load(:action_controller) do
           include Tailsman::ControllerMethods

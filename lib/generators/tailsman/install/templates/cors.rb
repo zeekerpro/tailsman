@@ -21,9 +21,10 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     allow do
       origins Rails.configuration.tailsman[:origins]
       resource '*',
-          headers: [ jwt_token_label ],
-          methods: :any,
-          expose: [ jwt_token_label, 'Content-Disposition' ],
-          max_age: 600
+          headers: :any,  # Allow any request headers
+          expose: [ jwt_token_label, 'Content-Disposition' ].compact,  # Ensure no nil values
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          max_age: 600,
+          credentials: true  # Allow sending authentication information
     end
 end

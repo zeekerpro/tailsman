@@ -29,15 +29,15 @@ module Tailsman
         JWT.encode payload, SECRET_KEY, ALGORITHM
       end
 
-      # token 解码
-      # 过期、非法等都会抛异常
+      # Decode token
+      # Will raise exceptions for expired, invalid tokens etc.
       # https://github.com/jwt/ruby-jwt
       def decode(token)
         decode_data = JWT.decode(token, SECRET_KEY, true, { exp_leeway: LEEWAY, algorithm: ALGORITHM })
         HashWithIndifferentAccess.new decode_data[0]
       end
 
-      # token 失效，需要重新分配 token
+      # Check if token is invalid and needs to be reissued
       def invalid?(token)
         Time.current.after? Time.at(decode(token)[:inv])
       end
