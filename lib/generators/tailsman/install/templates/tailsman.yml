@@ -3,7 +3,7 @@ default: &default
   # jwts config
   # secret_key is configured in credentials
   # token label
-  label: 'access-token'
+  label: 'Authorization'
   # encryption algorithm
   algorithm: HS256
   # expiration time: 60 min
