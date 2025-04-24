@@ -87,7 +87,10 @@ module Tailsman
         # Issue new token for current user
         define_method :dispatch_token do
           current = send "current_#{auth_model}"
-          response.headers[JwtToken::LABEL] = JwtToken.encode({ id: current[:id] }) if current and !response.committed?
+          if current and !response.committed?
+            token = JwtToken.encode({ id: current[:id] })
+            response.headers[JwtToken::LABEL] = "#{JwtToken::TOKEN_TYPE} #{token}"
+          end
         end
 
         private :current_from_token, :model_constant, :dispatch_token

@@ -4,6 +4,8 @@ default: &default
   # secret_key is configured in credentials
   # token label
   label: 'Authorization'
+  # token type
+  token_type: 'Bearer'
   # encryption algorithm
   algorithm: HS256
   # expiration time: 60 min

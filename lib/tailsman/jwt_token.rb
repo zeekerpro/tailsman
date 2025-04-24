@@ -5,6 +5,8 @@ module Tailsman
 
     LABEL = Rails.configuration.tailsman[:label]
 
+    TOKEN_TYPE = Rails.configuration.tailsman[:token_type] || 'Bearer'
+
     SECRET_KEY = Rails.application.credentials.secret_key_base
 
     ALGORITHM = Rails.configuration.tailsman[:algorithm]

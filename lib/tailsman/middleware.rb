@@ -14,8 +14,12 @@ module Tailsman
 
       def verify_token(env)
         request = ActionDispatch::Request.new(env)
-        token = request.headers[Tailsman::JwtToken::LABEL]
-        if token.present?
+        auth_header = request.headers[Tailsman::JwtToken::LABEL]
+        if auth_header.present?
+          # Remove token type prefix, e.g. "Bearer xxx" becomes "xxx"
+          token_match = auth_header.match(/^#{Tailsman::JwtToken::TOKEN_TYPE}\s+(.+)$/i)
+          token = token_match ? token_match[1] : auth_header
+          
           begin
             token_info = Tailsman::JwtToken.decode token
             if token_info.present?
